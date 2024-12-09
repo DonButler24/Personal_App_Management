@@ -1,0 +1,31 @@
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:padding="8dp">
+
+<TextView
+    android:id="@+id/app_name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="App Name"
+    android:textSize="16sp"
+    android:textStyle="bold" />
+
+<TextView
+    android:id="@+id/package_name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="com.example.app"
+    android:textSize="14sp"
+    android:paddingBottom="8dp" />
+
+<!-- Dropdown for categorization -->
+<Spinner
+    android:id="@+id/category_spinner"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:entries="@array/category_options" />
+
+</LinearLayout>
