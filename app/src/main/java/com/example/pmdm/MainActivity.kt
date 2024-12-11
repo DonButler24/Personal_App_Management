@@ -4,6 +4,7 @@ import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.ApplicationInfo
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -50,11 +51,10 @@ class MainActivity : AppCompatActivity() {
         val installedApps = pm.getInstalledApplications(0)
 
         for (app in installedApps) {
-            // Filter only non-system apps and apps installed from Play Store
             if ((app.flags and ApplicationInfo.FLAG_SYSTEM) == 0 &&
                 (app.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 0) {
 
-                val installerInfo = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                val installerInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     pm.getInstallSourceInfo(app.packageName).installingPackageName
                 } else {
                     @Suppress("DEPRECATION")
@@ -62,10 +62,17 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 if (installerInfo == "com.android.vending") { // Play Store
+                    val riskLevel = when (app.packageName) {
+                        "com.einnovation.temu", "com.zhiliaoapp.musically" -> "High"
+                        "com.fitbit.FitbitMobile", "com.discord" -> "Medium"
+                        else -> "Low"
+                    }
+
                     appList.add(
                         AppModel(
                             appName = pm.getApplicationLabel(app).toString(),
-                            packageName = app.packageName
+                            packageName = app.packageName,
+                            riskLevel = riskLevel
                         )
                     )
                 }
@@ -82,8 +89,21 @@ class MainActivity : AppCompatActivity() {
             "Unrestricted" -> Log.d("MainActivity", "${app.appName} marked as Unrestricted. No changes made.")
         }
     }
+    private fun revokePermissions(packageName: String) {
+        // Informational message to indicate that the function is called
+        Toast.makeText(this, "Revoke Permissions called for $packageName (no action taken)", Toast.LENGTH_SHORT).show()
 
-private fun revokePermissions(packageName: String) {
+        // Check if the app is a Device Admin
+        if (!devicePolicyManager.isAdminActive(adminComponent)) {
+            Toast.makeText(this, "App is not a Device Admin!", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        // Log statement to keep track of this call for debugging purposes
+        Log.d("MainActivity", "Revoke Permissions called for $packageName, but no actions are being performed.")
+    }
+
+    /**private fun revokePermissions(packageName: String) {
     // List of permissions to revoke
     val permissions = listOf(
         "android.permission.ACCESS_FINE_LOCATION",
@@ -139,11 +159,10 @@ private fun revokePermissions(packageName: String) {
     // Revoke permissions for the specified package
     for (permission in permissions) {
         try {
-            devicePolicyManager.setPermissionGrantState(
+            devicePolicyManager.revokeRuntimePermission(
                 adminComponent,
                 packageName,
-                permission,
-                DevicePolicyManager.PERMISSION_POLICY_DENY
+                permission
             )
         } catch (e: Exception) {
             Toast.makeText(this, "Failed to revoke $permission for $packageName", Toast.LENGTH_SHORT).show()
@@ -152,5 +171,5 @@ private fun revokePermissions(packageName: String) {
     }
 
     Toast.makeText(this, "Permissions revoked for $packageName", Toast.LENGTH_LONG).show()
-}
+}*/
 }

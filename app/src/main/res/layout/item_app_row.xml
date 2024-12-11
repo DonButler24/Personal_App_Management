@@ -1,31 +1,37 @@
 <LinearLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:orientation="vertical"
-android:padding="8dp">
-
-<TextView
-    android:id="@+id/app_name"
-    android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="App Name"
-    android:textSize="16sp"
-    android:textStyle="bold" />
+    android:orientation="vertical"
+    android:padding="8dp">
 
-<TextView
-    android:id="@+id/package_name"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="com.example.app"
-    android:textSize="14sp"
-    android:paddingBottom="8dp" />
+    <TextView
+        android:id="@+id/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="App Name"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
-<!-- Dropdown for categorization -->
-<Spinner
-    android:id="@+id/category_spinner"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:entries="@array/category_options" />
+    <TextView
+        android:id="@+id/package_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="com.example.app"
+        android:textSize="14sp" />
 
+    <TextView
+        android:id="@+id/risk_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Risk Level: Low"
+        android:textSize="14sp"
+        android:textColor="@android:color/holo_red_dark"
+        android:paddingBottom="8dp" />
+
+    <Spinner
+        android:id="@+id/category_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/category_options" />
 </LinearLayout>
